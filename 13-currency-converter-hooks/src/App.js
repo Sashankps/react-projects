@@ -6,6 +6,7 @@ function App() {
   const [value, setValue] = useState(10); 
   const [con1, setCon1] = useState('USD'); 
   const [con2, setCon2] = useState('CHF'); 
+  const [loading, setLoading] = useState(false); 
   const [display, setDisplay] = useState(0); 
 
   const handleValue = (e) => { 
@@ -20,16 +21,22 @@ function App() {
   }
   useEffect(() => {   
     async function getData() { 
+
       let convertedValue = 0; 
       if(con1 !== con2) { 
+        setLoading(true); 
         const response = await axios.get(`https://api.frankfurter.app/latest?amount=${value}&from=${con1}&to=${con2}`); 
-        convertedValue = response.data.rates[con2]; 
-        setDisplay(convertedValue); 
+        setTimeout( () => { 
+          convertedValue = response.data.rates[con2]; 
+          setDisplay(convertedValue); 
+          setLoading(false); 
+        }, 1000)
       }else{
         setDisplay(value); 
       }
     }
     getData(); 
+
   },[value,con1,con2])
   return (
     <div className="App">
@@ -47,7 +54,7 @@ function App() {
           <option value="CHF">CHF</option>
           <option value="INR">INR</option>
         </select>
-        <h2>{display}</h2>
+        {loading === true ? <h2>Loading</h2> : <h2>{display}</h2>}
     </div>
   );
 }
