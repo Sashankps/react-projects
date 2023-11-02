@@ -25,7 +25,7 @@ function App() {
       let convertedValue = 0; 
       if(con1 !== con2) { 
         setLoading(true); 
-        const response = await axios.get(`https://api.frankfurter.app/latest?amount=${value}&from=${con1}&to=${con2}`); 
+        // const response = await axios.get(`https://api.frankfurter.app/latest?amount=${value}&from=${con1}&to=${con2}`); 
         setTimeout( () => { 
           convertedValue = response.data.rates[con2]; 
           setDisplay(convertedValue); 
