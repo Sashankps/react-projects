@@ -2,6 +2,7 @@ import './App.css';
 import { useReducer } from 'react';
 
 function reducer(state, action) { 
+console.log(state, action); 
   const {type} = action; 
   switch (type) {
     case 'increment': {
