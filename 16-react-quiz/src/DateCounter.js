@@ -1,23 +1,39 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 function reducer(state, action) { 
   // State is count here
   // Action is dispatched value 
 
   console.log(state, action); 
-  if(action.type === 'dec') return state -1; 
-  if(action.type === 'inc') return state +1; 
-  if(action.type === 'setCount') return action.payload;
-  if(action.type === 'reset') return action.payload;
-  
+  // if(action.type === 'dec') return state - 1; 
+  // if(action.type === 'inc') return state + 1; 
+  // if(action.type === 'reset') return 0;
+  // if(action.type === 'setCount') return action.payload;
+  switch(action.type) {
+    case 'dec' : 
+      return { ...state, count : state.count - state.step } 
+    case 'inc' : 
+      return {...state, count : state.count + state.step}
+    case 'setCount' : 
+      return {...state, count : action.payload }
+    case 'setStep' :
+      return {...state, step : action.payload}
+    case 'reset' : 
+      return {count : 0, step : 1}  
+    default : 
+      throw new Error('Unknown case');
+    }
+
 }
 
 // Dispatch function invokes the reducer function with its argument and the reducer function returns the modified value. 
 
 function DateCounter() {
   // const [count, setCount] = useState(0);
-  const [count, dispatch] = useReducer(reducer, 0); 
-  const [step, setStep] = useState(1);
+  // const [step, setStep] = useState(1); 
+  
+  const [state, dispatch] = useReducer(reducer, {count : 0, step : 1}); 
+  const {count, step} = state;  
 
   // This mutates the date object.
   const date = new Date("june 21 2027");
@@ -42,14 +58,15 @@ function DateCounter() {
   };
 
   const defineStep = function (e) {
-    setStep(Number(e.target.value));
+    // setStep(Number(e.target.value));
+    dispatch({type : 'setStep', payload : Number(e.target.value)})
   };
 
   const reset = function () {
     // dispatch(0); 
     // setCount(0);
     // setStep(1);
-    dispatch({type : 'reset', payload : 0})
+    dispatch({type : 'reset'})
   };
 
   return (
