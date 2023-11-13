@@ -3,8 +3,9 @@ import Loader from './Loader'
 import Error from './Error'
 import StartScreen from "./StartScreen";
 import NextQuestion from './NextQuestion'
-import { useEffect, useReducer } from "react";
+import Progress from "./Progress";
 import Question from "./Question";
+import { useEffect, useReducer } from "react";
 
 const initialState = { 
   questions : [], 
@@ -13,7 +14,6 @@ const initialState = {
   answer : null, 
   points : 0
 }
-
 
 function reducer(state, action) { 
   switch(action.type) { 
@@ -46,8 +46,6 @@ function reducer(state, action) {
       throw new Error('Case unknown'); 
   }
 }
-
-
 
 export default function App() { 
   const [{questions, status, index,answer, points}, dispatch] = useReducer(reducer, initialState); 
@@ -91,10 +89,15 @@ export default function App() {
     .catch(err => dispatch({type : 'error', payload : err})); 
   }, [])
 
-
   const setReady = () => { 
     dispatch({type : 'active'})
   }
+
+  const maxPoints = questions.reduce(
+    (acc, curr) => acc + curr.points, 0
+  ); 
+
+  console.log(maxPoints); 
 
   return <div className="app">
     <Header />
@@ -103,11 +106,12 @@ export default function App() {
       {status === 'error' && <Error />}
       {status === 'ready' && <StartScreen noOfQs={questions.length} setReady={setReady} />}
       {status === 'active' && 
-        <><Question question={questions[index]} dispatch={dispatch} answer={answer} points={points}/>
+        <>
+        <Progress maxQ={questions.length} currQ={index} maxPoints={maxPoints} points={points} answer={answer} />
+        <Question question={questions[index]} dispatch={dispatch} answer={answer} points={points}/>
         <NextQuestion dispatch={dispatch} answer={answer} />
         </>
       }
     </div>
-    <div>{points}</div>
   </div>
 }
