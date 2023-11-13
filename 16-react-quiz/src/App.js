@@ -6,11 +6,12 @@ import NextQuestion from './NextQuestion'
 import Progress from "./Progress";
 import Question from "./Question";
 import { useEffect, useReducer } from "react";
+import Finish from "./Finish";
 
 const initialState = { 
   questions : [], 
   status : 'loading', 
-  index : 0, 
+  index : 14, 
   answer : null, 
   points : 0
 }
@@ -41,6 +42,10 @@ function reducer(state, action) {
         ...state, 
         index : state.index + 1, 
         answer : null
+      }
+    case 'finish' : 
+      return {
+        ...state, status : 'finish'
       }
     default : 
       throw new Error('Case unknown'); 
@@ -109,9 +114,10 @@ export default function App() {
         <>
         <Progress maxQ={questions.length} currQ={index} maxPoints={maxPoints} points={points} answer={answer} />
         <Question question={questions[index]} dispatch={dispatch} answer={answer} points={points}/>
-        <NextQuestion dispatch={dispatch} answer={answer} />
+        <NextQuestion dispatch={dispatch} answer={answer} index={index} maxQ={questions.length} />
         </>
       }
+      {status === 'finish' && <Finish points={points} maxPoints={maxPoints}  />}
     </div>
   </div>
 }
