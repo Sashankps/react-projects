@@ -29,9 +29,16 @@ function reducer(state, action) {
         ...state, status : 'active'
       }
     case 'newAnswer' : 
-    console.log(action.payload)
+      const currQ = state.questions.at(state.index);
       return { 
-        ...state, answer : action.payload.payAns, points : action.payload.payPoints
+        ...state, 
+        answer : action.payload,
+        points : action.payload === currQ.correctOption ? (state.points + currQ.points) : state.points
+      }
+    case 'nextQuestion' : 
+      return { 
+        ...state, 
+        index : state.index + 1
       }
     default : 
       throw new Error('Case unknown'); 

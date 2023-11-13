@@ -1,18 +1,7 @@
 import React from 'react'
-import { useEffect } from 'react';
 
-export default function Question({question, dispatch, answer, points}) {
+export default function Question({question, dispatch, answer}) {
     const hasAnswered = answer !== null;
-    let tempPoints = points; 
-    if(hasAnswered){
-        if(answer === question.correctOption){
-            tempPoints  += 10; 
-        }
-    }
-
-
-
-    console.log(tempPoints); 
     return (
     <div>
         <h2>{question.question}</h2>
@@ -20,7 +9,7 @@ export default function Question({question, dispatch, answer, points}) {
             {question.options.map((m,index) => (
                 <button 
                 onClick={() => {
-                    dispatch({type : 'newAnswer', payload : {payAns : index, payPoints : tempPoints }})
+                    dispatch({type : 'newAnswer', payload : index})
                 }} 
                 disabled={answer !== null}
                 className={`btn btn-option 
