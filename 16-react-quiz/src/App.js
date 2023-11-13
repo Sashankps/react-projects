@@ -11,7 +11,7 @@ import Finish from "./Finish";
 const initialState = { 
   questions : [], 
   status : 'loading', 
-  index : 0, 
+  index : 14, 
   answer : null, 
   points : 0
 }
