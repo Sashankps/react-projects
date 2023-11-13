@@ -2,6 +2,7 @@ import Header from "./Header"
 import Loader from './Loader'
 import Error from './Error'
 import StartScreen from "./StartScreen";
+import NextQuestion from './NextQuestion'
 import { useEffect, useReducer } from "react";
 import Question from "./Question";
 
@@ -38,7 +39,8 @@ function reducer(state, action) {
     case 'nextQuestion' : 
       return { 
         ...state, 
-        index : state.index + 1
+        index : state.index + 1, 
+        answer : null
       }
     default : 
       throw new Error('Case unknown'); 
@@ -100,7 +102,11 @@ export default function App() {
       {status === 'loading' && <Loader />}
       {status === 'error' && <Error />}
       {status === 'ready' && <StartScreen noOfQs={questions.length} setReady={setReady} />}
-      {status === 'active' && <Question question={questions[index]} dispatch={dispatch} answer={answer} points={points} />}
+      {status === 'active' && 
+        <><Question question={questions[index]} dispatch={dispatch} answer={answer} points={points}/>
+        <NextQuestion dispatch={dispatch} answer={answer} />
+        </>
+      }
     </div>
     <div>{points}</div>
   </div>
