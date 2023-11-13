@@ -11,7 +11,7 @@ import Finish from "./Finish";
 const initialState = { 
   questions : [], 
   status : 'loading', 
-  index : 14, 
+  index : 0, 
   answer : null, 
   points : 0
 }
@@ -45,7 +45,13 @@ function reducer(state, action) {
       }
     case 'finish' : 
       return {
-        ...state, status : 'finish'
+        ...state, status : 'finish', 
+      }
+    case 'restart' : 
+      return { 
+        ...state, status : 'ready', 
+        answer : null, 
+        points : 0
       }
     default : 
       throw new Error('Case unknown'); 
@@ -117,7 +123,7 @@ export default function App() {
         <NextQuestion dispatch={dispatch} answer={answer} index={index} maxQ={questions.length} />
         </>
       }
-      {status === 'finish' && <Finish points={points} maxPoints={maxPoints}  />}
+      {status === 'finish' && <Finish points={points} maxPoints={maxPoints} dispatch={dispatch} />}
     </div>
   </div>
 }
