@@ -51,6 +51,7 @@ function reducer(state, action) {
       return { 
         ...state, status : 'ready', 
         answer : null, 
+        index : 0, 
         points : 0
       }
     default : 
