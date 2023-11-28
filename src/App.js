@@ -16,15 +16,11 @@ const initialState = {
   points : 0
 }
 
-constructor() { 
-
-}
-
 function reducer(state, action) { 
   switch(action.type) { 
     case 'dataReady' : 
       return { 
-        ...state, questions : action.payload, status : 'ready'
+        ...state, questions : action.payload.questions, status : 'ready'
       }
     case 'error' : 
       return { 
@@ -96,14 +92,14 @@ export default function App() {
     // })} */}
 
   useEffect(function () { 
-    fetch('http://localhost:8000/questions')
+    fetch('/data/questions.json')
     .then(res => res.json())
     .then(data =>{
       dispatch({type : 'dataReady', payload : data}); 
     })
     .catch(err => dispatch({type : 'error', payload : err})); 
   }, [])
-  
+
   const setReady = () => { 
     dispatch({type : 'active'})
   }
